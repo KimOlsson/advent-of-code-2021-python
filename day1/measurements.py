@@ -1,6 +1,6 @@
 from sys import exit
 
-def read_file_to_list(fname: str, encoding='utf') -> list[str]:
+def read_file_to_list(fname: str, encoding='utf-8') -> list[str]:
     data = []
     with open(fname, 'r', encoding=encoding) as file:
         for line in file:
