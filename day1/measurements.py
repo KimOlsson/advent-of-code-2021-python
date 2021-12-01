@@ -21,11 +21,10 @@ def count_depth_increments(measurements: list[int], depth=1) -> int:
     if len(measurements) <= depth:
         exit('not enough data to measure with given depth\nQuitting..')
 
-    measurement_buckets = measurements
     depth_increase_count = 0
-    for index in range(1, len(measurement_buckets)+depth-1):
-        previous = sum(measurement_buckets[index-1:(index-1+depth)])
-        current = sum(measurement_buckets[index:(index+depth)])
+    for index in range(1, len(measurements)+depth-1):
+        previous = sum(measurements[index-1:(index-1+depth)])
+        current = sum(measurements[index:(index+depth)])
 
         if previous < current:
             depth_increase_count += 1
