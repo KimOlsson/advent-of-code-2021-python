@@ -1,7 +1,5 @@
 from sys import exit
 
-DEPTH = 3
-
 def read_file_to_list(fname: str, encoding='utf-8') -> list[str]:
     data = []
     with open(fname, 'r', encoding=encoding) as file:
@@ -40,10 +38,11 @@ def simple_tests():
 
 def run():
     simple_tests()
+    depth = 3
     raw_measurements = read_file_to_list('measurements')
     measurements = list_to_int_list(raw_measurements)
-    depth_increase_count = count_depth_increments(measurements, depth=DEPTH)
-    print("Depth increase count was {} at given depth of {}".format(depth_increase_count, DEPTH))
+    depth_increase_count = count_depth_increments(measurements, depth=depth)
+    print("Depth increase count was {} at given depth of {}".format(depth_increase_count, depth))
 
 if __name__ == '__main__':
     run()
