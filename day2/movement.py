@@ -29,7 +29,12 @@ def process_movement_commands(movements: list[str]) -> tuple[int, int]:
             exit('Unknown direction {} given\nQuitting..'.format(direction))
     return position, depth
 
+def simple_tests():
+    commands= ["forward 5", "down 5", "forward 8", "up 3", "down 8", "forward 2"]
+    assert(process_movement_commands(commands) == (15, 60))
+
 def run():
+    simple_tests()
     data = read_file_to_list('movement')
     position, depth = process_movement_commands(data)
     print('You ended up in position {} and depth of {}'.format(position, depth))
