@@ -40,8 +40,7 @@ def most_common_bits_per_column(binaries: list[str]) -> list[int]:
     return most_common_bits
 
 def remove_binaries_not_matching_bit_in_position(binaries: list[str], bit: int, position: int) -> list[str]:
-    bits_match = str_to_int(x[position]) == str_to_int(bit)
-    return [x for x in binaries if bits_match]
+    return [x for x in binaries if str_to_int(x[position]) == str_to_int(bit)]
 
 def oxygen_generator_rating(binaries: list[str]) -> list[str]:
     binaries_left = binaries[:]
