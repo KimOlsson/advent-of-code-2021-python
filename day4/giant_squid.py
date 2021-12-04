@@ -1,4 +1,5 @@
 from bingo import Bingo
+from sys import exit
 
 ROW_LENGTH = 5
 
