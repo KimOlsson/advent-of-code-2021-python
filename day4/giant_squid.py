@@ -31,7 +31,7 @@ def parse_bingo_boards(raw_boards: list[str]) -> list[list[int]]:
     return boards
 
 
-def draw_all_numbers(bingo_objects: list[Bingo], numbers: list[int]) -> tuple[Bingo, int]:
+def draw_all_numbers(bingo_objects: list[Bingo], numbers: list[int]) -> list[tuple[Bingo, int]]:
     all_winners = []
     for number in numbers:
         for board in bingo_objects:
