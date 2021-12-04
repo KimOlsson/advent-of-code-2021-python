@@ -1,9 +1,9 @@
 class Bingo:
     """
-    This class let's you create a bingo board with your preferred width (row_length).
-    It let's you to update drawn bingo numbers and has functions to test if you
+    This class lets you create a bingo board with your preferred width (row_length).
+    It lets you to update drawn bingo numbers and has functions to test if you
     made a point vertically or horizontally.
-    
+
     After a point has been made, drawn number hits are no longer updated, hence
     score stays as is after winning.
     """
