@@ -31,7 +31,6 @@ def parse_bingo_boards(raw_boards: list[str]) -> list[list[int]]:
             board = []
     return boards
 
-
 def draw_all_numbers(bingo_objects: list[Bingo], numbers: list[int]) -> list[tuple[Bingo, int]]:
     all_winners = []
     for number in numbers:
@@ -43,8 +42,27 @@ def draw_all_numbers(bingo_objects: list[Bingo], numbers: list[int]) -> list[tup
             all_winners.append((board, number))
     return all_winners
 
+def simple_tests():
+    """Bit of duplication with run() -function"""
+    
+    raw_bingo_data = read_file_to_list('sample_data')
+    drawn_numbers = raw_bingo_data[0].split(',')
+    drawn_numbers_int = [str_to_int(x) for x in drawn_numbers]
+    raw_bingo_boards = raw_bingo_data[1:]
+    bingo_boards = parse_bingo_boards(raw_bingo_boards)
+    bingo_objects = [Bingo(x, ROW_LENGTH) for x in bingo_boards]
+
+    all_winners_in_order = draw_all_numbers(bingo_objects, drawn_numbers_int)
+    winner, winner_with_number = all_winners_in_order[0]
+    assert(winner.get_board_score(winner_with_number) == 4512)
+
+    last_winner, last_winner_with_number = all_winners_in_order[-1]
+    assert(last_winner.get_board_score(last_winner_with_number) == 1924)
+
 
 def run():
+    simple_tests()
+
     raw_bingo_data = read_file_to_list('bingo_data')
     drawn_numbers = raw_bingo_data[0].split(',')
     drawn_numbers_int = [str_to_int(x) for x in drawn_numbers]
