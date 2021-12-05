@@ -54,22 +54,19 @@ def fill_diagram_diagonal_line(diagram: list[list[int]], start: tuple[int, int],
     x1, y1 = start
     x2, y2 = end
     line_length = abs(x1 - x2)
-    smaller_x, _ = tuple_of_two_ints_in_ascending_order(x1, x2) # 5, 8
-    smaller_y, _ = tuple_of_two_ints_in_ascending_order(y1, y2) # 2, 5
+    smaller_x = min(x1, x2)
+    smaller_y = min(y1, y2)
     for i in range(line_length+1):
         movement_x = x1+i if x1 == smaller_x else x1-i
         movement_y = y1+i if y1 == smaller_y else y1-i
         diagram[movement_y][movement_x] += 1
 
-def tuple_of_two_ints_in_ascending_order(num1: int, num2: int) -> tuple[int, int]:
-    return (num1, num2) if num1 <= num2 else (num2, num1)
-
 def fill_diagram(diagram: list[list[int]], coordinates: list[list[tuple[int, int]]]):
     for line in coordinates:
         start, end = line
         if coordinates_overlap(start, end):
-            start_x, end_x = tuple_of_two_ints_in_ascending_order(start[0], end[0])
-            start_y, end_y = tuple_of_two_ints_in_ascending_order(start[1], end[1])
+            start_x, end_x = min(start[0], end[0]), max(start[0], end[0])
+            start_y, end_y = min(start[1], end[1]), max(start[1], end[1])
 
             if start_x == end_x: fill_diagram_vertical_line(diagram, (start_y, end_y), start_x)
             elif start_y == end_y: fill_diagram_horizontal_line(diagram, (start_x, end_x), start_y)
