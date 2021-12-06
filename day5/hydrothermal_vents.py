@@ -31,10 +31,8 @@ def find_largest_coordinates(coordinates: list[list[tuple[int, int]]]) -> tuple[
     max_y = 0
     for line in coordinates:
         start, end = line
-        temp_x = max(start[0], end[0])
-        temp_y = max(start[1], end[1])
-        if temp_x > max_x: max_x = temp_x
-        if temp_y > max_y: max_y = temp_y
+        max_x = max(start[0], end[0], max_x)
+        max_y = max(start[1], end[1], max_y)
     return max_x, max_y
 
 def coordinates_overlap(start: tuple[int, int], end: tuple[int, int]) -> bool:
