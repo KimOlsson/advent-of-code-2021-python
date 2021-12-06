@@ -37,8 +37,8 @@ def handle_day_passing(lanternfishes: list[LanternFish]):
 
 def handle_time_period(lanternfishes: list[list[LanternFish]], days: int):
     for i in range(days):
-        print(f"Day {i+1} - {count_all_fishes(lanternfishes)}")
         handle_day_passing(lanternfishes)
+        print(f"After day {i+1} - {count_all_fishes(lanternfishes)}")
     print(f"Time period of {days} days has passed!")
 
 def count_all_fishes(lanternfishes: list[LanternFish]):
