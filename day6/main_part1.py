@@ -1,8 +1,9 @@
 # Second part requires really heavy simulations, sadly can't treat
 # these fishes as individuals :sad: However, I'll leave this solution
 # as is. Takes roughly 2.3 seconds to get to day 80, after that
-# 10% increase in days increases the runtime by 2x, if you
-# try to run this, watch out that you won't run out of RAM. :)
+# 10% increase in days increases the runtime by roughly 2x, if you
+# try to run this simulation with custom time period, 
+# watch out that you won't run out of RAM. :)
 
 from sys import exit
 from lanternfish import LanternFish
