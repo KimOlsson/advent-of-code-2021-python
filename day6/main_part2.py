@@ -14,44 +14,39 @@ def str_to_int(value: str) -> int:
     except ValueError:
         exit('You attempted to convert value {} to int\nQuitting..'.format(value))
 
-def offspring_offsprings(offsprings, time_left):
-    if time_left < 10:
-        print("\t\tNo more offsprings")
-        return 0
-    time_left -= 10
-    offsprings += 1
-    print("\toffspring made offspring! +1 offspring time left", time_left)
-    for time_left_for_offspring in range(time_left, 0, -8):
+def firstborn(time_left: int):
+    count = 1
+    if time_left < 9:
+        return count
+    time_left -= 9  # After 9 days cycle goes to 6-days and first offspring is born
+    count += firstborn(time_left)   # This should calculate all offsprings for the parent
+    count += lanternfish_single_parent_family_tree(6, time_left)
+    return count
 
-        offsprings += offspring_offsprings(0, time_left_for_offspring)
-    return offsprings
+def lanternfish_single_parent_family_tree(lanternfish, days):
+    count = 1
+    if days < lanternfish+1:
+        return count
+    time_left = days-(lanternfish+1)
+    count += firstborn(time_left)
+    count += lanternfish_single_parent_family_tree(6, time_left)
+    return count
 
-def amount_of_offsprings(timers, days=18):
-    #fishes = 1
-    offsprings_total = 0
-    for i, timer in enumerate(timers):
-        print("\n###Start parent", i+1)
-        offsprings = 0
-        time_left = days
-        time_left -= timer+1
-        #print("\tParent made offspring +1")
-        #offsprings += 1
-        for time_left_for_offspring in range(time_left, 0, -8):
-            print("Parent time left", time_left_for_offspring)
-            if time_left_for_offspring >= 8:
-                print("\tParent made offspring +1")
-                offsprings += 1
-            offsprings += offspring_offsprings(0, time_left_for_offspring)
-        print(f"Finished parent {i+1}/{len(timers)} - {offsprings}+1")
-        offsprings_total += offsprings + 1
-        if i == 2: break
-    return offsprings_total
+
+def lanternfish_full_family_tree_size(lanternfishes: list[int], days=18):
+    count = len(lanternfishes)  # Taking in the account parents themselves
+    for parent in lanternfishes:
+        # Each fish has internal timer, lets calculate beginning of full cycle
+        time_left = days-(parent+1)   # parent at day 3 should become 3..2..1..0..6, 4 steps.
+        count += lanternfish_single_parent_family_tree(6, time_left)
+    return count
 
 def run():
     raw_timers = read_file_to_list('data')
     timers = raw_timers[0].split(',')
     timers_int = [str_to_int(x) for x in timers]
-    offsprings = amount_of_offsprings([3,4,3,1,2])
+    offsprings = lanternfish_full_family_tree_size([3,4,3,1,2])
+    #offsprings = amount_of_offsprings(timers_int)
     print(offsprings)
     
 
