@@ -1,5 +1,16 @@
-from sys import exit
+from sys import exit, argv
 from time import time
+from itertools import repeat
+from numba import jit
+
+from multiprocessing import Pool, cpu_count
+MULTIPROCESS_POOL_SIZE = 0
+try:
+    MULTIPROCESS_POOL_SIZE = int(argv[1])
+    if MULTIPROCESS_POOL_SIZE >= cpu_count():
+        exit(f"You selected {MULTIPROCESS_POOL_SIZE} cores, edit code to proceed or change value to smaller.")
+except:
+    pass
 
 def read_file_to_list(fname: str, encoding='utf-8') -> list[str]:
     data = []
@@ -14,6 +25,7 @@ def str_to_int(value: str) -> int:
     except ValueError:
         exit('You attempted to convert value {} to int\nQuitting..'.format(value))
 
+@jit(nopython=True, nogil=True)
 def firstborn(time_left: int):
     count = 1
     if time_left < 9:
@@ -23,12 +35,12 @@ def firstborn(time_left: int):
     count += lanternfish_single_parent_family_tree(6, time_left)
     return count
 
+@jit(nopython=True, nogil=True)
 def lanternfish_single_parent_family_tree(lanternfish, days):
     count = 0
     if days < lanternfish+1:
         return count
     time_left = days-(lanternfish+1)
-    #count = 1
     count += firstborn(time_left)
     count += lanternfish_single_parent_family_tree(6, time_left)
     return count
@@ -41,15 +53,19 @@ def lanternfish_start_new_family_tree_simulation(parent: int, days: int) -> tupl
     count += firstborn(time_left) # Family tree of the firsborn offspring
     count += lanternfish_single_parent_family_tree(6, time_left)
     print(f"\tFamily tree size after {days} for timer {parent} was {count}")
-    return count
+    return parent, count
 
-
-def lanternfish_full_family_tree_size(lanternfishes: list[int], days=80) -> list[tuple[int, int]]:
+def lanternfish_full_family_tree_size(lanternfishes: list[int], days) -> list[tuple[int, int]]:
     count_in_order = []
-    for parent in lanternfishes:
-        count = lanternfish_start_new_family_tree_simulation(parent, days)
-        count_in_order.append((parent, count))
-    return count_in_order
+    if not MULTIPROCESS_POOL_SIZE:
+        for parent in lanternfishes:
+            count = lanternfish_start_new_family_tree_simulation(parent, days)
+            count_in_order.append(count)
+    else:
+        p = Pool(MULTIPROCESS_POOL_SIZE)
+        count = p.starmap(lanternfish_start_new_family_tree_simulation, zip(lanternfishes, repeat(days)))
+        count_in_order = count[:]
+    return sorted(count_in_order, key=lambda x: x[0])
 
 def timer_counts(timers: list[int]) -> dict[int: int]:
     count_of_timers = {}
@@ -84,7 +100,8 @@ def run(days):
 
 if __name__ == '__main__':
     start = time() * 1000
-    day_amount = 160
+    day_amount = 240
     run(day_amount)
     end = time() * 1000
-    print(f"Program finished simulating {day_amount} days in {end-start}ms")
+    pools_used = MULTIPROCESS_POOL_SIZE if MULTIPROCESS_POOL_SIZE else 1
+    print(f"Program finished simulating {day_amount} days in {end-start}ms using {pools_used} pools")
