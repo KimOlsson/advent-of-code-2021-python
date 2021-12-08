@@ -1,3 +1,7 @@
+# I gave arg 3 to the program (3 pools) and with Jit this finished
+# 256 day simulation in 75 seconds. Without jit and no additional
+# pools, this took 90 minutes.
+
 from sys import exit, argv
 from time import time
 from itertools import repeat
@@ -100,7 +104,7 @@ def run(days):
 
 if __name__ == '__main__':
     start = time() * 1000
-    day_amount = 240
+    day_amount = 220
     run(day_amount)
     end = time() * 1000
     pools_used = MULTIPROCESS_POOL_SIZE if MULTIPROCESS_POOL_SIZE else 1
